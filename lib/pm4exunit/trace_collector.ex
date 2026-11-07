@@ -40,9 +40,17 @@ defmodule Pm4ExUnit.TraceCollector do
   def emit_event(%__MODULE__{} = collector, event_id, activity, opts \\ []) do
     id_str = to_string(event_id)
     act_str = to_string(activity)
-    timestamp = Keyword.get(opts, :timestamp) || DateTime.utc_now()
-    attributes = Keyword.get(opts, :attributes, %{})
-    relationships = Keyword.get(opts, :relationships, [])
+
+    opts_map =
+      cond do
+        is_list(opts) -> Map.new(opts)
+        is_map(opts) -> opts
+        true -> %{}
+      end
+
+    timestamp = Map.get(opts_map, :timestamp) || DateTime.utc_now()
+    attributes = Map.get(opts_map, :attributes, %{})
+    relationships = Map.get(opts_map, :relationships) || Map.get(opts_map, :objects, [])
 
     event = %{
       id: id_str,
