@@ -11,7 +11,8 @@ defmodule Pm4ExUnit.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       description: "Process Intelligence, Conformance Checking, and OCPQ for ExUnit (pm4pytest for Elixir)",
-      package: package()
+      package: package(),
+      docs: [main: "readme", extras: ["README.md", "docs/README.md", "docs/tutorials/first-conformance-test.md", "docs/reference/api.md", "docs/explanation/token-based-replay.md", "docs/explanation/session-per-test.md"]]
     ]
   end
 
