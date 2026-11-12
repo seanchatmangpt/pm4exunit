@@ -3,3 +3,4 @@
 *.beam
 .fetch
 erl_crash.dump
+/doc/
