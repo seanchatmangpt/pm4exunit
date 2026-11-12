@@ -28,6 +28,7 @@ defmodule Pm4ExUnit.MixProject do
   defp package do
     [
       licenses: ["MIT"],
+      files: ~w(lib mix.exs README.md LICENSE),
       links: %{"GitHub" => "https://github.com/seanchatmangpt/pm4exunit"}
     ]
   end
