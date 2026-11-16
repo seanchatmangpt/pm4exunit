@@ -8,7 +8,7 @@ conformance assertion pass and then fail. It takes about ten minutes.
 In `mix.exs`:
 
 ```elixir
-{:pm4exunit, "~> 0.1", only: :test}
+{:pm4exunit, "~> 26.11", only: :test}
 ```
 
 Run `mix deps.get`.
@@ -45,14 +45,19 @@ message like:
 ```text
 Process Conformance Assertion Failed!
 Minimum Fitness Required: 1.0
-Observed Fitness: 0.5
+Observed Fitness: 0.5833
 Violations:
-  * Conformance fitness 0.5 is below required minimum 1.0.
+  * Conformance fitness 0.5833 is below required minimum 1.0.
   * Trace missed 1 mandatory transition(s) in path: ["order_created", "payment_processed", "order_fulfilled"].
   * Trace ended with 1 unconsumed token(s) (premature termination or superfluous transitions).
+Diagnostics:
+  Trace: ["order_created", "order_fulfilled"]
+  Missing Tokens: 1
+  Remaining Tokens: 1
 ```
 
-The skipped step is named in the violations.
+The expected path is printed in the violations; compare it with the trace under Diagnostics to
+see which step is missing.
 
 ## 4. Add a latency limit
 

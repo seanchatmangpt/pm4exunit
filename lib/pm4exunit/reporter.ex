@@ -1,6 +1,6 @@
 defmodule Pm4ExUnit.Reporter do
   @moduledoc """
-  Generates machine-parseable test output (TAP v13, JUnit XML, JSON) for process intelligence runs.
+  Generates machine-parseable test output (TAP v13, JUnit XML) for process intelligence runs.
   Matches pm4pytest reporters.
   """
 

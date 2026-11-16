@@ -1,32 +1,35 @@
 # TODO-FIX-AND-FINISH (pm4exunit)
 
-Standing: UNVERIFIED
+Standing: PARTIAL (audited against 7ca9dd3 plus dirty tree, 2026-11-12; code read, not run)
 
 Source: `ash_surface/docs/jira/v26.11.11/PROJECT-REVIEWS.md` R9, re-read where marked confirmed.
 
 ## Fix
 
-- HIGH `lib/pm4exunit/temporal.ex:96-104` bad/missing timestamps fall back to
-  `DateTime.utc_now()` (confirmed lines 101, 104; review cited 92-99). `assert_sla` becomes
-  nondeterministic. Check: event with bad timestamp returns typed error, repeatable.
-- MED `lib/pm4exunit/temporal.ex:28-38` first occurrence of each activity used; `to` before
-  `from` gives negative diff: UNVERIFIED (first-match `Enum.find` confirmed; negative case not
-  tested). Check: test with reversed order fails with a violation.
-- LOW `lib/pm4exunit/reporter.ex` XML is escaped via `escape_xml` (confirmed); TAP/YAML block
-  injection UNVERIFIED. Check: test with newline/quote in violation yields valid TAP.
-- LOW README stale OCPQ claim; dead code/stale comment in `lib/pm4exunit/conformance.ex`;
-  empty-range `lcs_length`: UNVERIFIED.
+- HIGH (confirmed, open) `lib/pm4exunit/temporal.ex:97-104`: a bad ISO timestamp (:101) or a
+  missing timestamp (:104) falls back to `DateTime.utc_now()`, so `assert_sla` is
+  nondeterministic. Check: bad or missing timestamp returns a typed error, repeatably.
+- MED (confirmed, open) `temporal.ex:22-30,55-57`: first occurrence of each activity is used and
+  no ordering check exists. Reversed `to`/`from` gives a negative diff that satisfies
+  `<= max_seconds`, so the SLA falsely passes. Check: reversed-order test fails with a violation.
+- LOW (confirmed, open) `reporter.ex:10-36`: `format_tap` interpolates `test_name` and
+  violations unescaped into its YAML block. JUnit is safe (`escape_xml`). Check: newline or
+  quote in a violation yields valid TAP.
+- LOW `lcs_length` (`conformance.ex:340`) on empty trace/pattern looks safe but is untested.
+  Add a test. Dead-code/stale-comment claim in `conformance.ex` is unconfirmed.
+- DONE 2026-11-12: stale OCPQ claim removed from `mix.exs` description; reporter moduledoc no
+  longer claims JSON; docs audited and corrected.
 
 ## Finish
 
-- Add temporal court for missing-timestamp refusal and reversed `from`/`to`.
+- Add temporal tests for missing-timestamp refusal and reversed `from`/`to`.
 - Decide handling of repeated activities (first, last, or all pairs) and document it.
 
 ## Commit hygiene
 
-- `lib/pm4exunit/conformance.ex` modified, uncommitted (confirmed ` M`).
-- `test/pm4exunit_cross_engine_vector_test.exs` untracked (confirmed `??`). Check: clean
+- Uncommitted: version bump 26.11.12 and the doc/mix.exs corrections. Check: clean
   `git status --short`.
+- Cross-engine vector test is already committed (67c06ae).
 
 ## Decide
 
@@ -34,8 +37,7 @@ Source: `ash_surface/docs/jira/v26.11.11/PROJECT-REVIEWS.md` R9, re-read where m
 
 ## Reuse
 
-- Static AST mock scanner `chicago/collaborators/mock_scan.ex:65,104` (UNVERIFIED lines) is
-  reusable by ash_surface.
+- Moved: `chicago/collaborators/mock_scan.ex` is not in this repo; track it in its owning repo.
 
 ## See Also
 

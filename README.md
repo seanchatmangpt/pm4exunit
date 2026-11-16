@@ -22,7 +22,7 @@ end
 
 ```elixir
 def deps do
-  [{:pm4exunit, "~> 0.1", only: :test}]
+  [{:pm4exunit, "~> 26.11", only: :test}]
 end
 ```
 
@@ -31,10 +31,14 @@ Requires Elixir 1.15 or later. No runtime dependencies.
 ## What it does
 
 - **Conformance:** `assert_conformance/3` and `refute_conformance/3` replay a trace against one or
-  more valid paths using token-based replay, and report a fitness score in `0.0..1.0`.
-- **Latency:** `assert_sla/4` bounds the time between two activities.
+  more valid paths using token-based replay, and report a fitness score in `0.0..1.0`. The
+  assertion passes only when fitness is at least `min_fitness` (default `1.0`) and no tokens are
+  missing.
+- **Latency:** `assert_sla/4` bounds the time between two activities. Pass `max_seconds:` (or
+  `max_duration:`).
 - **Recording:** each test gets its own session process (`%{pm4_session: pid}`) that stores events
-  and OCEL-style objects.
+  and OCEL-style objects. Assertions also accept a `%Pm4ExUnit.TraceCollector{}` or a plain list
+  of events.
 - **Reporting:** `Pm4ExUnit.Reporter` formats a result as TAP v13 or JUnit XML.
 
 Replay semantics port the pm4vitest TBR engine, so the same model and trace score identically in
@@ -54,9 +58,13 @@ The docs follow [Diátaxis](https://diataxis.fr). Start at [`docs/README.md`](do
 ## Known limitations
 
 - `assert_sla/4` uses the first occurrence of each activity. Repeated activities are not paired.
-- An event with a missing or unparsable timestamp falls back to `DateTime.utc_now()` inside
-  `Pm4ExUnit.Temporal`. Always pass explicit timestamps when asserting SLAs.
+- An event with a missing timestamp gets `DateTime.utc_now()` when recorded
+  (`Pm4ExUnit.TraceCollector`). `Pm4ExUnit.Temporal` also falls back to `utc_now()` for any
+  timestamp that is not a `%DateTime{}` (or an ISO8601 `"time:timestamp"` string). Always pass
+  explicit `DateTime` timestamps when asserting SLAs.
 - Object-centric querying (OCPQ) is not implemented. Objects are recorded but not queryable.
+
+The `docs/` directory ships with the hex package and is rendered on HexDocs.
 
 ## License
 

@@ -1,7 +1,7 @@
 defmodule Pm4ExUnit.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "26.11.12"
 
   def project do
     [
@@ -10,9 +10,9 @@ defmodule Pm4ExUnit.MixProject do
       elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      description: "Process Intelligence, Conformance Checking, and OCPQ for ExUnit (pm4pytest for Elixir)",
+      description: "Process Intelligence and Conformance Checking for ExUnit (pm4pytest for Elixir)",
       package: package(),
-      docs: [main: "readme", extras: ["README.md", "docs/README.md", "docs/tutorials/first-conformance-test.md", "docs/reference/api.md", "docs/explanation/token-based-replay.md", "docs/explanation/session-per-test.md"]]
+      docs: [main: "readme", extras: ["README.md", "docs/README.md", "docs/tutorials/first-conformance-test.md", "docs/how-to/model-multiple-paths.md", "docs/how-to/enforce-a-latency-sla.md", "docs/how-to/refute-a-trace.md", "docs/how-to/emit-tap-and-junit.md", "docs/how-to/assert-on-plain-lists.md", "docs/reference/api.md", "docs/explanation/token-based-replay.md", "docs/explanation/session-per-test.md"]]
     ]
   end
 
@@ -29,7 +29,7 @@ defmodule Pm4ExUnit.MixProject do
   defp package do
     [
       licenses: ["MIT"],
-      files: ~w(lib mix.exs README.md LICENSE),
+      files: ~w(lib docs mix.exs README.md CHANGELOG.md LICENSE),
       links: %{"GitHub" => "https://github.com/seanchatmangpt/pm4exunit"}
     ]
   end
